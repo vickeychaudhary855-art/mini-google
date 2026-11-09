@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Google 1998 – Advanced Offline Search Engine</title>
+  <style>
+    /* ==========================================================================
+       RETRO 1998 GOOGLE THEME & ADVANCED UI STYLES (100% Offline & Standalone)
+       ========================================================================== */
+    :root {
+      --google-blue: #4285F4;
+      --google-red: #EA4335;
+      --google-yellow: #FBBC05;
+      --google-green: #34A853;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #202124;
+      --text-muted: #5f6368;
+      --border-color: #dadce0;
+      --link-color: #1a0dab;
+      --url-color: #006621;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 20px 15px 50px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Top Utility Navigation Bar */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-stats-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: #e8f0fe;
+      color: #1967d2;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: #3c4043;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .nav-btn:hover {
+      background: #f1f3f4;
+      border-color: #bdc1c6;
+    }
+
+    /* Header & 1998 Logo */
+    header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease;
+    }
+
+    .logo-container:hover {
+      transform: scale(1.02);
+    }
+
+    .logo-prefix {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #666;
+      font-family: "Times New Roman", Times, Georgia, serif;
+      font-style: italic;
+    }
+
+    .google-logo {
+      font-family: "Times New Roman", Times, Georgia, serif;
+      font-size: 3.5rem;
+      font-weight: bold;
+      letter-spacing: -1px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+    }
+
+    .g-blue   { color: var(--google-blue); }
+    .g-red    { color: var(--google-red); }
+    .g-yellow { color: var(--google-yellow); }
+    .g-green  { color: var(--google-green); }
+
+    .logo-badge {
+      background: linear-gradient(135deg, var(--google-green), #2d9449);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+      letter-spacing: 1px;
+      vertical-align: super;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Main Search Box & Suggestions Container */
+    .search-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+      border: 1px solid var(--border-color);
+      max-width: 860px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.15rem;
+      color: #777;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 13px 44px 13px 44px;
+      font-size: 1.1rem;
+      border: 2px solid #dfe1e5;
+      border-radius: 28px;
+      outline: none;
+      transition: all 0.2s ease;
+      background: #fff;
+    }
+
+    .search-input:focus {
+      border-color: var(--google-blue);
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.28);
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 1.15rem;
+      color: #9aa0a6;
+      cursor: pointer;
+      display: none;
+      padding: 4px;
+      line-height: 1;
+      border-radius: 50%;
+    }
+
+    .clear-search-btn:hover {
+      color: #3c4043;
+      background: #f1f3f4;
+    }
+
+    /* Autocomplete Suggestions Dropdown */
+    .suggestions-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      z-index: 100;
+      max-height: 280px;
+      overflow-y: auto;
+      list-style: none;
+    }
+
+    .suggestion-item {
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #202124;
+      border-bottom: 1px solid #f8f9fa;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-item:hover, .suggestion-item.active {
+      background-color: #f1f3f4;
+      color: var(--google-blue);
+    }
+
+    .suggestion-icon {
+      color: #70757a;
+      font-size: 0.9rem;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 11px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 24px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn-search {
+      background: var(--google-blue);
+      color: #fff;
+    }
+
+    .btn-search:hover {
+      background: #3367d6;
+      box-shadow: 0 2px 8px rgba(51, 103, 214, 0.35);
+    }
+
+    .btn-surfer {
+      background: #f1f3f4;
+      color: var(--text-main);
+      border: 1px solid #dadce0;
+    }
+
+    .btn-surfer:hover {
+      background: #e8eaed;
+      border-color: #bdc1c6;
+    }
+
+    .btn-lucky {
+      background: #f8f9fa;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+    }
+
+    .btn-lucky:hover {
+      background: #eef3fc;
+      color: var(--google-blue);
+      border-color: #aecbfa;
+    }
+
+    /* Example search chips */
+    .examples-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding-top: 10px;
+      border-top: 1px dashed #e4e7eb;
+    }
+
+    .examples-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-chip {
+      padding: 4px 12px;
+      font-size: 0.82rem;
+      border-radius: 14px;
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      cursor: pointer;
+      color: #3c4043;
+      transition: all 0.15s ease;
+      font-weight: 500;
+    }
+
+    .btn-chip:hover {
+      background: #e8f0fe;
+      color: var(--google-blue);
+      border-color: #aecbfa;
+      transform: translateY(-1px);
+    }
+
+    /* Recent Search History Bar */
+    .history-bar {
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 10px;
+      margin-top: 6px;
+      font-size: 0.82rem;
+    }
+
+    .history-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .history-chip {
+      background: #edf2f7;
+      color: #2d3748;
+      padding: 3px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 1px solid #cbd5e0;
+      transition: all 0.15s ease;
+    }
+
+    .history-chip:hover {
+      background: #e2e8f0;
+      color: #1a202c;
+    }
+
+    .clear-history-link {
+      color: #d93025;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: 6px;
+      font-size: 0.78rem;
+    }
+
+    /* Database Statistics Section (Collapsible) */
+    .stats-panel {
+      display: none;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .stat-card-num {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--google-blue);
+    }
+
+    .stat-card-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    /* Timing & Metrics Bar */
+    .metrics-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 0 4px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .timing-text {
+      font-style: italic;
+    }
+
+    .surfer-status-pill {
+      font-size: 0.8rem;
+      color: var(--google-green);
+      font-weight: 600;
+      background: #e6f4ea;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      display: none;
+      text-align: center;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--google-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Results Layout: 2 Side-by-side columns */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .column-panel {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      min-height: 420px;
+    }
+
+    .column-header {
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #f1f3f4;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .column-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .col-title-1997 { color: #d93025; }
+    .col-title-1998 { color: #188038; }
+
+    .column-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Individual Result Card */
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .result-card {
+      border: 1px solid #edf0f2;
+      background: #fafbfc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .result-card:hover {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      gap: 8px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #fff;
+      background: #5f6368;
+      border-radius: 6px;
+      padding: 2px 7px;
+      letter-spacing: 0.5px;
+    }
+
+    .rank-top-1 { background: #d93025; }
+    .rank-top-2 { background: #1a73e8; }
+    .rank-top-3 { background: #188038; }
+
+    .score-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .badge-count {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    .badge-surfer {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .badge-inlinks {
+      background: #e8f0fe;
+      color: #1967d2;
+      margin-left: 5px;
+    }
+
+    .result-title-link {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--link-color);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 3px;
+      cursor: pointer;
+    }
+
+    .result-title-link:hover {
+      text-decoration: underline;
+    }
+
+    .page-url {
+      color: var(--url-color);
+      font-size: 0.82rem;
+      font-family: Consolas, Monaco, monospace;
+      text-decoration: none;
+      word-break: break-all;
+      display: block;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .page-url:hover {
+      text-decoration: underline;
+    }
+
+    .page-snippet {
+      font-size: 0.9rem;
+      color: #3c4043;
+      line-height: 1.45;
+    }
+
+    /* Keyword Highlight */
+    mark.highlight {
+      background-color: #ffeb3b;
+      color: #202124;
+      font-weight: bold;
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+
+    /* Local Webpage In-App Viewer Modal / Panel */
+    .browser-viewer-container {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .browser-chrome {
+      background: #e8eaed;
+      padding: 12px 18px;
+      border-bottom: 1px solid #dadce0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .browser-btn {
+      background: #fff;
+      border: 1px solid #dadce0;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .browser-btn:hover {
+      background: #f1f3f4;
+      border-color: #bdc1c6;
+    }
+
+    .browser-btn-primary {
+      background: var(--google-blue);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .browser-btn-primary:hover {
+      background: #3367d6;
+    }
+
+    .browser-url-bar {
+      flex: 1;
+      background: #fff;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1px solid #dadce0;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.88rem;
+      color: #202124;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 250px;
+    }
+
+    .browser-url-icon {
+      color: #188038;
+      font-size: 0.9rem;
+    }
+
+    .browser-content {
+      padding: 30px 35px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .browser-page-title {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #1a0dab;
+      border-bottom: 2px solid #f1f3f4;
+      padding-bottom: 10px;
+      font-family: Georgia, serif;
+    }
+
+    .browser-meta-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .browser-text-body {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #202124;
+      margin-bottom: 30px;
+      padding: 16px;
+      background: #fcfdfe;
+      border-radius: 8px;
+      border: 1px solid #eef0f2;
+    }
+
+    .browser-links-section {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px dashed #dadce0;
+    }
+
+    .browser-links-heading {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #3c4043;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .outgoing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+    }
+
+    .outgoing-link-card {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .outgoing-link-card:hover {
+      background: #e8f0fe;
+      border-color: #aecbfa;
+      transform: translateY(-1px);
+    }
+
+    .outgoing-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--link-color);
+      margin-bottom: 2px;
+    }
+
+    .outgoing-url {
+      font-size: 0.76rem;
+      color: var(--url-color);
+      font-family: Consolas, monospace;
+    }
+
+    /* Empty state / Error Message */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-message {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #d93025;
+      margin-bottom: 8px;
+    }
+
+    .empty-tip {
+      font-size: 0.88rem;
+      color: #70757a;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 45px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-form {
+        flex-direction: column;
+      }
+      .search-input-wrapper {
+        width: 100%;
+      }
+      .search-actions-row {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+      }
+      .search-actions-row .btn {
+        flex: 1;
+        justify-content: center;
+      }
+      .google-logo {
+        font-size: 2.8rem;
+      }
+      .browser-content {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+      <div class="nav-stats-badges">
+        <span class="stat-pill" id="totalIndexedPill">📄 125 Indexed Webpages</span>
+        <span class="stat-pill">🔗 363 Directed Hyperlinks</span>
+        <span class="stat-pill" style="background:#e6f4ea; color:#137333;">⚡ 100k Surfer Simulation</span>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-btn" onclick="toggleStatsPanel()" id="statsToggleBtn">📊 Database Stats</button>
+        <button class="nav-btn" onclick="exploreRandomPage()">🎲 Feeling Lucky</button>
+        <button class="nav-btn" onclick="returnToHome()">🏠 Home</button>
+      </div>
+    </div>
+
+    <!-- Header with 1998 nostalgic logo -->
+    <header>
+      <div class="logo-container" onclick="returnToHome()" title="Click to go Home">
+        <span class="logo-prefix">Mini</span>
+        <span class="google-logo">
+          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span><span class="g-yellow">!</span>
+        </span>
+        <span class="logo-badge">1998</span>
+      </div>
+      <div class="tagline">Stanford AI Lab • Information Retrieval &amp; Random Surfer PageRank Engine</div>
+    </header>
+
+    <!-- Database Statistics Collapsible Panel -->
+    <div id="statsPanel" class="stats-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.1rem; color:#202124;">📊 Mini Google 1998 Web Graph &amp; Index Statistics</h3>
+        <button class="nav-btn" onclick="toggleStatsPanel()">✕ Close</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-num" id="statTotalPages">125</div>
+          <div class="stat-card-label">Total Webpages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num" id="statTotalLinks">363</div>
+          <div class="stat-card-label">Total Directed Links</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">2.9</div>
+          <div class="stat-card-label">Avg Links / Page</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num" id="statDeadEnds">6</div>
+          <div class="stat-card-label">Dead-End Pages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num" id="statTopAuthority">Python Docs</div>
+          <div class="stat-card-label">Top Surfer Hub</div>
+        </div>
+      </div>
+      <div style="margin-top:14px; font-size:0.83rem; color:var(--text-muted); line-height:1.5;">
+        <strong>Indexed Domains:</strong> Artificial Intelligence, Python, Java, Programming, Computer Science, Algorithms, Mathematics, Quantum Physics, Space Exploration, Sports (Cricket &amp; Football), Movies, Music, Gaming, History, Geography, Business, Finance, Cybersecurity, Engineering, and Italian Dining.
+      </div>
+    </div>
+
+    <!-- Main Search Card Area -->
+    <div class="search-card" id="searchCard">
+      <div class="search-form">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search keywords (e.g. Python, Cricket, AI, Movie, Pizza)..."
+            autocomplete="off"
+            aria-label="Search Query"
+          />
+          <button id="clearSearchBtn" class="clear-search-btn" title="Clear search" onclick="clearSearchInput()">✕</button>
+          
+          <!-- Autocomplete Dropdown List -->
+          <ul id="suggestionsDropdown" class="suggestions-dropdown"></ul>
+        </div>
+
+        <div class="search-actions-row" style="display:flex; gap:8px;">
+          <button id="searchBtn" class="btn btn-search">Google Search</button>
+          <button id="surferBtn" class="btn btn-surfer" title="Recalculate 100,000 random walk steps">🔄 Run Surfer Again</button>
+          <button id="luckyBtn" class="btn btn-lucky" onclick="exploreRandomPage()" title="Explore a random page from the database">🎲 Feeling Lucky</button>
+        </div>
+      </div>
+
+      <!-- Quick Example Buttons -->
+      <div class="examples-bar">
+        <span class="examples-label">Examples:</span>
+        <button class="btn-chip" onclick="searchFor('Pizza')">🍕 Pizza</button>
+        <button class="btn-chip" onclick="searchFor('Cricket')">🏏 Cricket</button>
+        <button class="btn-chip" onclick="searchFor('Movie')">🎬 Movie</button>
+        <button class="btn-chip" onclick="searchFor('Exam')">📝 Exam</button>
+        <button class="btn-chip" onclick="searchFor('Python')">🐍 Python</button>
+        <button class="btn-chip" onclick="searchFor('Artificial Intelligence')">🤖 AI</button>
+        <button class="btn-chip" onclick="searchFor('Java')">☕ Java</button>
+        <button class="btn-chip" onclick="searchFor('Football')">⚽ Football</button>
+        <button class="btn-chip" onclick="searchFor('Space')">🚀 Space</button>
+        <button class="btn-chip" onclick="searchFor('Cybersecurity')">🔒 Security</button>
+        <button class="btn-chip" onclick="searchFor('Programming')">💻 Programming</button>
+        <button class="btn-chip" onclick="searchFor('Mathematics')">📐 Math</button>
+      </div>
+
+      <!-- Search History Bar (using localStorage) -->
+      <div id="historyBar" class="history-bar">
+        <span class="history-label">🕒 Recent:</span>
+        <div id="historyChipsContainer" style="display:inline-flex; gap:6px; flex-wrap:wrap;"></div>
+        <span class="clear-history-link" onclick="clearSearchHistory()">Clear history</span>
+      </div>
+    </div>
+
+    <!-- Search Metrics & Timing Bar -->
+    <div id="metricsBar" class="metrics-bar">
+      <div id="resultsCountText" class="timing-text">About 0 results (0 ms)</div>
+      <div id="surferStatusPill" class="surfer-status-pill">✓ 100,000 Surfer Moves Computed</div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-overlay">
+      <div class="spinner"></div>
+      <div style="font-weight:600; color:var(--text-main); font-size:1.05rem;">Simulating 100,000 Random Surfer moves...</div>
+      <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">
+        Applying 85% link transitions &amp; 15% random jumps across 125 interconnected webpages
+      </div>
+    </div>
+
+    <!-- Two-Column Side-by-Side Search Results View -->
+    <div id="resultsView">
+      <div class="results-grid">
+        
+        <!-- LEFT COLUMN: Old Way (1997) -->
+        <div class="column-panel">
+          <div class="column-header">
+            <div>
+              <div class="column-title col-title-1997">
+                <span>📜</span> Old Way (1997)
+              </div>
+              <div class="column-subtitle">Ranked by Exact Keyword Frequency (Word Count)</div>
+            </div>
+            <div id="countSummary1997" style="font-size:0.8rem; font-weight:bold; color:var(--text-muted);"></div>
+          </div>
+          <div id="results1997" class="result-list">
+            <!-- Results injected by JavaScript -->
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Surfer Way (1998) -->
+        <div class="column-panel">
+          <div class="column-header">
+            <div>
+              <div class="column-title col-title-1998">
+                <span>🚀</span> Surfer Way (1998)
+              </div>
+              <div class="column-subtitle">Ranked by Random Surfer PageRank Simulation</div>
+            </div>
+            <div id="countSummary1998" style="font-size:0.8rem; font-weight:bold; color:var(--text-muted);"></div>
+          </div>
+          <div id="results1998" class="result-list">
+            <!-- Results injected by JavaScript -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- In-App Webpage Browser View (Opens when clicking any search result or link) -->
+    <div id="browserView" class="browser-viewer-container">
+      <div class="browser-chrome">
+        <button class="browser-btn browser-btn-primary" onclick="backToSearchResults()">← Back to Results</button>
+        <button class="browser-btn" onclick="returnToHome()">🏠 Home</button>
+        <button class="browser-btn" onclick="exploreRandomPage()">🎲 Random Page</button>
+        <div class="browser-url-bar">
+          <span class="browser-url-icon">🔒</span>
+          <span id="browserUrlText">http://...</span>
+        </div>
+      </div>
+
+      <div class="browser-content">
+        <h1 id="browserTitle" class="browser-page-title">Page Title</h1>
+        
+        <div class="browser-meta-tags">
+          <span class="stat-pill" id="browserPageIdBadge">Page #1</span>
+          <span class="score-badge badge-surfer" id="browserSurferBadge">Surfer Score: 0.0%</span>
+          <span class="score-badge badge-inlinks" id="browserInlinksBadge">Links in: 0</span>
+        </div>
+
+        <div class="browser-text-body" id="browserTextBody">
+          Webpage content will be displayed here...
+        </div>
+
+        <!-- Outgoing Hyperlinks on this page -->
+        <div class="browser-links-section">
+          <div class="browser-links-heading">
+            <span>🔗</span> Outgoing Hyperlinks on this Page (<span id="browserOutgoingCount">0</span>)
+          </div>
+          <div class="outgoing-grid" id="browserOutgoingLinks">
+            <!-- Outgoing link cards injected by JS -->
+          </div>
+        </div>
+
+        <!-- Incoming Backlinks -->
+        <div class="browser-links-section" style="margin-top:20px;">
+          <div class="browser-links-heading" style="color:#1967d2;">
+            <span>📥</span> Incoming Backlinks (<span id="browserIncomingCount">0</span> pages link here)
+          </div>
+          <div class="outgoing-grid" id="browserIncomingLinks">
+            <!-- Incoming link cards injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      Mini Google 1998 • Built with pure HTML, CSS and JavaScript • Standalone &amp; 100% Offline Ready
+    </footer>
+
+  </div>
+
+  <script>
+
+    // --------------------------------------------------------------------------
+    // 1. DATASET: 125 INTERCONNECTED WEBPAGES
+    // Preserves original 16 pages exactly, expanded with 109 realistic pages!
+    // --------------------------------------------------------------------------
+    const rawDataset = [
+  {
+    "page": 1,
+    "title": "Best Pizza Pizza Delivery & Fast Specials",
+    "url": "http://www.bestpizzapizza.com",
+    "text": "Pizza pizza pizza! We love pizza, best hot pizza, fast pizza delivery, cheese pizza and pepperoni pizza everyday.",
+    "links_to": "2"
+  },
+  {
+    "page": 2,
+    "title": "City Guide: Italian Dining & Wood-Fired Pizza",
+    "url": "http://www.cityguide.org/dining",
+    "text": "Find the finest Italian restaurants and authentic wood-fired pizza in town with fresh ingredients.",
+    "links_to": "3;4;6"
+  },
+  {
+    "page": 3,
+    "title": "Luigi's Famous Pizzeria - Traditional Recipes",
+    "url": "http://www.classicpizzeria.edu",
+    "text": "Welcome to Luigi's famous pizza kitchen, serving traditional pizza since 1950.",
+    "links_to": "2;5"
+  },
+  {
+    "page": 4,
+    "title": "Campus Hub: Student Life, Pizza, Movie & Exam Study",
+    "url": "http://www.campus-hub.edu",
+    "text": "Student guide for cheap pizza, midnight movie screenings, and final exam study schedules.",
+    "links_to": "3;7;8;11"
+  },
+  {
+    "page": 5,
+    "title": "Food Lovers Network: Pizza Reviews & Dining Deals",
+    "url": "http://www.foodlovers.net",
+    "text": "Reviews of great pizza spots, dining deals, and cooking recipes.",
+    "links_to": "3"
+  },
+  {
+    "page": 6,
+    "title": "Super Cricket: Live Scores & Cricket News",
+    "url": "http://www.supercricketcricket.com",
+    "text": "Cricket cricket cricket live scores! Fantasy cricket, cricket news, cricket bat reviews, cricket champions.",
+    "links_to": ""
+  },
+  {
+    "page": 7,
+    "title": "World Cricket Board: Official Fixtures & Match Rankings",
+    "url": "http://www.worldcricketboard.org",
+    "text": "Official international cricket tournament fixtures, player rankings, and live test match cricket coverage.",
+    "links_to": "8;9"
+  },
+  {
+    "page": 8,
+    "title": "Sports Daily: International Cricket & Football League",
+    "url": "http://www.sportsdaily.com",
+    "text": "Daily sports highlights covering international cricket, football leagues, and fitness tips.",
+    "links_to": "7;10"
+  },
+  {
+    "page": 9,
+    "title": "Cricket Fans Club: Team Strategy & Tournament Tickets",
+    "url": "http://www.cricketfansclub.org",
+    "text": "Join passionate cricket supporters discussing team strategy, cricket history, and stadium tickets.",
+    "links_to": "7;8"
+  },
+  {
+    "page": 10,
+    "title": "Free Movie Movie Stream: Trailers & Action Clips",
+    "url": "http://www.freemoviemovies.biz",
+    "text": "Movie movie movie stream! Watch free movie trailers, top movie releases, action movie and comedy movie clips.",
+    "links_to": "12"
+  },
+  {
+    "page": 11,
+    "title": "Cinema Archive: Classic Film History & Movie Reviews",
+    "url": "http://www.cinema-archive.org",
+    "text": "Explore classic cinema history, award-winning movie archives, director interviews, and movie reviews.",
+    "links_to": "4;12;13"
+  },
+  {
+    "page": 12,
+    "title": "Independent Film Festival & Documentary Showcases",
+    "url": "http://www.filmfestival.org",
+    "text": "Annual independent movie festival schedule, screening tickets, and documentary movie showcases.",
+    "links_to": "11;14"
+  },
+  {
+    "page": 13,
+    "title": "Cheat Exam Quick Notes & Multiple Choice Exam Tips",
+    "url": "http://www.cheat-exam-now.info",
+    "text": "Pass your exam exam exam! Easy exam tricks, quick exam notes, multiple-choice exam answers and exam tips.",
+    "links_to": ""
+  },
+  {
+    "page": 14,
+    "title": "University Portal: Academic Calendar & Exam Schedules",
+    "url": "http://www.university-portal.edu",
+    "text": "Academic calendar, library hours, entrance exam preparation materials, and final exam timetables.",
+    "links_to": "4;15"
+  },
+  {
+    "page": 15,
+    "title": "Study Resources: Lecture Notes & Practice Exam Questions",
+    "url": "http://www.studyresources.org",
+    "text": "Comprehensive study guides, lecture notes, practice exam questions, and tips to reduce exam stress.",
+    "links_to": "14;16"
+  },
+  {
+    "page": 16,
+    "title": "Student Forum: Exam Revision, Movie Nights & Cricket",
+    "url": "http://www.studentforum.org",
+    "text": "Campus discussions on tough exam revision, favorite movie nights, and weekend cricket matches.",
+    "links_to": "3;7;11;14"
+  },
+  {
+    "page": 17,
+    "title": "Artificial Intelligence Lab: Foundations & Neural Networks",
+    "url": "http://www.ai-research-lab.edu/foundations",
+    "text": "Artificial intelligence research exploring deep neural networks, heuristic search algorithms, knowledge graphs, and automated decision making systems.",
+    "links_to": "18;19;24;31"
+  },
+  {
+    "page": 18,
+    "title": "Machine Learning Repository: Datasets & Predictive Models",
+    "url": "http://www.ml-repository.org/models",
+    "text": "Open benchmark datasets for machine learning algorithms, statistical classification, regression models, and supervised learning experiments.",
+    "links_to": "17;20;27"
+  },
+  {
+    "page": 19,
+    "title": "Natural Language Processing & Speech Recognition Group",
+    "url": "http://www.nlp-society.org/research",
+    "text": "Natural language processing lab studying semantic parsing, tokenization, machine translation, and language understanding using artificial intelligence.",
+    "links_to": "17;18;21"
+  },
+  {
+    "page": 20,
+    "title": "Computer Vision & Visual Pattern Recognition Institute",
+    "url": "http://www.vision-institute.org/imaging",
+    "text": "Advances in computer vision, image segmentation, object detection, and convolution algorithms for autonomous systems and artificial intelligence.",
+    "links_to": "17;18;22"
+  },
+  {
+    "page": 21,
+    "title": "Robotics Engineering & Autonomous Agents Laboratory",
+    "url": "http://www.robotics-engineering.edu/agents",
+    "text": "Design of autonomous mobile robots, robotic kinematics, sensor fusion, motion planning, and intelligent control systems.",
+    "links_to": "17;22;75"
+  },
+  {
+    "page": 22,
+    "title": "Expert Systems & Knowledge Engineering Portal",
+    "url": "http://www.expert-systems.org/rules",
+    "text": "Classical artificial intelligence expert systems, inference engines, rule-based reasoning, and diagnostic knowledge bases.",
+    "links_to": "17;19;24"
+  },
+  {
+    "page": 23,
+    "title": "AI Ethics & Algorithmic Fairness Consortium",
+    "url": "http://www.ai-ethics-consortium.org",
+    "text": "Guidelines for responsible artificial intelligence, algorithmic transparency, bias mitigation, and safety standards in automated decision systems.",
+    "links_to": "17;18;84"
+  },
+  {
+    "page": 24,
+    "title": "Programming Paradigms: Functional, Object-Oriented & Logic",
+    "url": "http://www.programming-paradigms.org",
+    "text": "Comparative programming language analysis covering functional programming, object-oriented design patterns, memory management, and code elegance.",
+    "links_to": "25;27;28;31"
+  },
+  {
+    "page": 25,
+    "title": "Compiler Construction & Abstract Syntax Trees Guide",
+    "url": "http://www.compiler-design.edu/parsing",
+    "text": "Comprehensive tutorial on compiler optimization, lexical analysis, parsers, bytecode interpreters, and intermediate code generation.",
+    "links_to": "24;31;33"
+  },
+  {
+    "page": 26,
+    "title": "Software Engineering Best Practices & Architecture Patterns",
+    "url": "http://www.software-engineering-guild.com",
+    "text": "Modern software engineering methodologies including unit testing, continuous integration, refactoring, design patterns, and microservices.",
+    "links_to": "24;27;29"
+  },
+  {
+    "page": 27,
+    "title": "Git Version Control & Collaborative Code Repositories",
+    "url": "http://www.git-handbook.org/workflow",
+    "text": "Essential Git branching strategies, distributed version control, pull requests, merge conflict resolution, and collaborative open source programming.",
+    "links_to": "26;28;30"
+  },
+  {
+    "page": 28,
+    "title": "Open Source Software Foundation: Community Collaboration",
+    "url": "http://www.opensource-initiative.org",
+    "text": "Promoting free and open source programming, community driven software development, software licenses, and collaborative engineering.",
+    "links_to": "24;27;71"
+  },
+  {
+    "page": 29,
+    "title": "Debug & Profiling Tools: Optimizing Application Speed",
+    "url": "http://www.code-profiling.net/speed",
+    "text": "Techniques for software debugging, memory leak detection, CPU performance profiling, and algorithmic code optimization.",
+    "links_to": "24;26;31"
+  },
+  {
+    "page": 30,
+    "title": "Web Standards Project: HTML, CSS & Client-side Scripting",
+    "url": "http://www.webstandards-archive.org",
+    "text": "Standardization of hypertext markup language, cascading style sheets, cross-browser scripting, and document object model architecture.",
+    "links_to": "24;71;72"
+  },
+  {
+    "page": 31,
+    "title": "The Official Python Programming Language Documentation",
+    "url": "http://www.python-lang-official.org/docs",
+    "text": "Python is a powerful high-level programming language emphasizing code readability, versatile standard libraries, and dynamic typing for computer science.",
+    "links_to": "32;33;34;17"
+  },
+  {
+    "page": 32,
+    "title": "Data Science with Python: NumPy, Pandas & Scientific Computing",
+    "url": "http://www.scipy-python.org/guide",
+    "text": "Scientific computing in Python using multidimensional arrays, data manipulation with pandas, numerical analysis, and machine learning integration.",
+    "links_to": "31;18;45"
+  },
+  {
+    "page": 33,
+    "title": "Django Web Framework: Rapid Python Web Development",
+    "url": "http://www.django-python-web.org",
+    "text": "Build secure and scalable web applications rapidly using the Python Django framework, model-view-controller patterns, and ORM database access.",
+    "links_to": "31;34;36"
+  },
+  {
+    "page": 34,
+    "title": "Automate Everyday Tasks with Python Scripting",
+    "url": "http://www.python-automation-guide.com",
+    "text": "Learn practical Python scripting for file management, web scraping, data formatting, automated email alerts, and administrative scripting.",
+    "links_to": "31;32;73"
+  },
+  {
+    "page": 35,
+    "title": "Python Game Development with Pygame: 2D Graphics",
+    "url": "http://www.pygame-tutorials.net",
+    "text": "Create interactive 2D video games using Python and Pygame, handling game loops, sprite animation, sound effects, and collision detection.",
+    "links_to": "31;65;66"
+  },
+  {
+    "page": 36,
+    "title": "Java Technology Platform: Enterprise & Object-Oriented Solutions",
+    "url": "http://www.java-platform-standards.org",
+    "text": "Java provides write-once run-anywhere software engineering with robust virtual machine architecture, static typing, and high performance enterprise libraries.",
+    "links_to": "37;38;39;24"
+  },
+  {
+    "page": 37,
+    "title": "Java Virtual Machine (JVM) Internals & Garbage Collection",
+    "url": "http://www.jvm-internals.edu/runtime",
+    "text": "Deep dive into Java bytecode execution, class loaders, JVM memory management, just-in-time compilation, and garbage collection algorithms.",
+    "links_to": "36;25;31"
+  },
+  {
+    "page": 38,
+    "title": "Spring Framework & Enterprise Java Web Architecture",
+    "url": "http://www.spring-java-enterprise.org",
+    "text": "Building robust enterprise backend applications with Java Spring, dependency injection, aspect-oriented programming, and RESTful web services.",
+    "links_to": "36;39;26"
+  },
+  {
+    "page": 39,
+    "title": "Java Concurrency & Multi-Threaded Systems Programming",
+    "url": "http://www.java-concurrency.net/threads",
+    "text": "Master multi-threaded programming in Java using thread pools, synchronization locks, atomic variables, and concurrent collections.",
+    "links_to": "36;37;42"
+  },
+  {
+    "page": 40,
+    "title": "Android Mobile App Development with Java",
+    "url": "http://www.android-dev-java.org/mobile",
+    "text": "Develop native mobile apps using Java, UI layouts, activity life cycles, background services, and touch event handling.",
+    "links_to": "36;24;71"
+  },
+  {
+    "page": 41,
+    "title": "Data Structures & Algorithms: The Computer Science Bible",
+    "url": "http://www.algorithms-cs.edu/handbook",
+    "text": "Fundamental computer science algorithms including binary search trees, hash tables, graph traversal, dynamic programming, and asymptotic complexity.",
+    "links_to": "42;43;17;31"
+  },
+  {
+    "page": 42,
+    "title": "Operating Systems Principles: Memory, Processes & Scheduling",
+    "url": "http://www.os-principles.edu/kernel",
+    "text": "Core computer science topics in operating systems: process scheduling, virtual memory, paging, kernel interrupts, file systems, and concurrency.",
+    "links_to": "41;37;39"
+  },
+  {
+    "page": 43,
+    "title": "Relational Database Management Systems & SQL Fundamentals",
+    "url": "http://www.database-systems.edu/sql",
+    "text": "Principles of relational databases, relational algebra, SQL query optimization, indexing with B-trees, ACID transactions, and normalization.",
+    "links_to": "41;26;38"
+  },
+  {
+    "page": 44,
+    "title": "Theory of Computation: Automata, Grammars & Turing Machines",
+    "url": "http://www.theory-of-computation.edu",
+    "text": "Theoretical computer science covering regular expressions, finite state automata, context-free grammars, decidability, and Turing machine limits.",
+    "links_to": "41;25;48"
+  },
+  {
+    "page": 45,
+    "title": "Linear Algebra for Machine Learning & Computer Graphics",
+    "url": "http://www.math-linear-algebra.edu",
+    "text": "Essential mathematics including vector spaces, matrix multiplication, eigenvalues, eigenvectors, matrix decompositions, and geometric transformations.",
+    "links_to": "17;18;46;47"
+  },
+  {
+    "page": 46,
+    "title": "Calculus & Differential Equations: Applied Mathematics",
+    "url": "http://www.calculus-central.edu",
+    "text": "Comprehensive mathematics tutorials covering limits, derivatives, integration techniques, partial differential equations, and gradient descent optimization.",
+    "links_to": "45;47;52"
+  },
+  {
+    "page": 47,
+    "title": "Probability, Statistics & Bayesian Inference Methods",
+    "url": "http://www.statistics-prob.org/bayesian",
+    "text": "Mathematical foundations of probability distributions, hypothesis testing, Bayes theorem, Markov chains, and stochastic modeling.",
+    "links_to": "45;18;48"
+  },
+  {
+    "page": 48,
+    "title": "Discrete Mathematics: Graph Theory & Combinatorics",
+    "url": "http://www.discrete-math.edu/graphs",
+    "text": "Discrete mathematics principles covering graph theory, network flow, combinatorics, proof methods, and Boolean logic essential for computer science.",
+    "links_to": "41;44;47"
+  },
+  {
+    "page": 49,
+    "title": "Open Courseware Consortium: Free Higher Education",
+    "url": "http://www.open-courseware-initiative.org",
+    "text": "Free university lecture notes, syllabi, exam questions, and video lectures spanning computer science, mathematics, engineering, and history.",
+    "links_to": "14;15;41;50"
+  },
+  {
+    "page": 50,
+    "title": "Distance Learning & Modern Online Education Platforms",
+    "url": "http://www.digital-education-trends.edu",
+    "text": "Innovative digital pedagogy, interactive virtual classrooms, educational technology, student assessment, and self-paced exam revision tools.",
+    "links_to": "49;15;14"
+  },
+  {
+    "page": 51,
+    "title": "STEM Education Initiative: Science & Mathematics for All",
+    "url": "http://www.stem-education-project.org",
+    "text": "Promoting excellence in science, technology, engineering, and mathematics education for students and university researchers worldwide.",
+    "links_to": "49;52;75"
+  },
+  {
+    "page": 52,
+    "title": "Quantum Physics & Theoretical Particle Research",
+    "url": "http://www.quantum-science-institute.org",
+    "text": "Frontier science exploring quantum mechanics, wave-particle duality, atomic spectroscopy, particle accelerators, and quantum computing prototypes.",
+    "links_to": "46;53;54"
+  },
+  {
+    "page": 53,
+    "title": "NASA Space Exploration Program & Deep Solar System Missions",
+    "url": "http://www.space-exploration-agency.gov/mars",
+    "text": "Missions to Mars, interplanetary space probes, orbital mechanics, planetary science, and rocket propulsion technology.",
+    "links_to": "54;55;75"
+  },
+  {
+    "page": 54,
+    "title": "Hubble Space Telescope Astronomy & Deep Cosmic Field",
+    "url": "http://www.astronomy-space-archive.org",
+    "text": "Astronomical observations, distant galaxies, stellar evolution, black holes, nebulae, and cosmological measurements of the expanding universe.",
+    "links_to": "53;52;55"
+  },
+  {
+    "page": 55,
+    "title": "Astrophysics & The Search for Extraterrestrial Planets",
+    "url": "http://www.astrophysics-exoplanets.org",
+    "text": "Detection of exoplanets in habitable zones, stellar spectrometry, gravitational lensing, and cosmic microwave background radiation.",
+    "links_to": "54;53;56"
+  },
+  {
+    "page": 56,
+    "title": "Molecular Biology, Genetics & DNA Sequencing Science",
+    "url": "http://www.molecular-biology-center.org",
+    "text": "Modern biological science covering genetics, recombinant DNA, protein folding, bioinformatics computing, and cellular metabolism.",
+    "links_to": "52;18;51"
+  },
+  {
+    "page": 57,
+    "title": "Global Football Federation: World Cup & Tournament News",
+    "url": "http://www.global-football-federation.org",
+    "text": "International football tournament rules, historic World Cup matches, football tactical formations, and player transfer statistics.",
+    "links_to": "58;59;8"
+  },
+  {
+    "page": 58,
+    "title": "European Premier Football League Weekly Highlights",
+    "url": "http://www.premier-football-league.com",
+    "text": "Weekly football league match reports, striker goals, goalkeeper saves, league standings, and tactical football manager analysis.",
+    "links_to": "57;59;8"
+  },
+  {
+    "page": 59,
+    "title": "Tactical Football Coaching & Youth Sports Academy",
+    "url": "http://www.football-coaching-academy.net",
+    "text": "Coaching drills for football agility, passing accuracy, set-piece defending, athletic conditioning, and youth football development.",
+    "links_to": "57;58;60"
+  },
+  {
+    "page": 60,
+    "title": "Cricket Strategy: Test Matches, Bowling Spin & Batting",
+    "url": "http://www.cricket-masterclass.org/skills",
+    "text": "In-depth cricket technique guide covering fast bowling swing, leg spin bowling, batting footwork, cricket captaincy, and field placement.",
+    "links_to": "7;8;9;61"
+  },
+  {
+    "page": 61,
+    "title": "Lord's Cricket Heritage & International Cricket History",
+    "url": "http://www.cricket-heritage-museum.org",
+    "text": "Celebrating two centuries of cricket traditions, legendary test match rivalries, historic cricket bats, and iconic cricket trophies.",
+    "links_to": "7;9;60"
+  },
+  {
+    "page": 62,
+    "title": "Hollywood Golden Age & Classic Cinema Directors",
+    "url": "http://www.classic-hollywood-cinema.com",
+    "text": "Retrospective on classic movie cinematography, film noir lighting, vintage movie scripts, and iconic Hollywood movie legends.",
+    "links_to": "11;12;63"
+  },
+  {
+    "page": 63,
+    "title": "Film Score & Soundtrack Composers Guild",
+    "url": "http://www.film-soundtracks-guild.org",
+    "text": "Appreciating orchestral film scores, movie music leitmotifs, acoustic design, and timeless cinematic audio recordings.",
+    "links_to": "11;62;68"
+  },
+  {
+    "page": 64,
+    "title": "Screenwriting Workshop: Narrative Structure for Movies",
+    "url": "http://www.screenwriters-workshop.net",
+    "text": "Crafting three-act screenplay structures, character dialogue, cinematic plot twists, and pitch decks for indie movie production.",
+    "links_to": "11;12;62"
+  },
+  {
+    "page": 65,
+    "title": "Retro 90s Arcade Gaming & 16-Bit Consoles Museum",
+    "url": "http://www.arcade-gaming-museum.org",
+    "text": "Nostalgic 1990s video gaming history, pixel art aesthetics, arcade cabinets, cartridge games, and golden era gaming soundtracks.",
+    "links_to": "66;67;35"
+  },
+  {
+    "page": 66,
+    "title": "3D Game Engine Architecture & Real-Time Rendering",
+    "url": "http://www.game-engine-dev.org/architecture",
+    "text": "Engineering 3D game engines: polygon rasterization, physics simulation, audio spatialization, shader pipelines, and gameplay scripting.",
+    "links_to": "65;24;45"
+  },
+  {
+    "page": 67,
+    "title": "Esports Competitive Gaming & Strategy Leagues",
+    "url": "http://www.esports-championship-network.com",
+    "text": "Competitive esports tournaments, real-time multiplayer gaming strategies, team communications, and professional gaming rankings.",
+    "links_to": "65;66;58"
+  },
+  {
+    "page": 68,
+    "title": "Classical Symphony Orchestra & Baroque Music Archive",
+    "url": "http://www.symphony-orchestra-archive.org",
+    "text": "Exploration of classical music masterworks, symphony orchestral arrangements, violin concertos, and piano sonatas.",
+    "links_to": "63;69;70"
+  },
+  {
+    "page": 69,
+    "title": "History of Jazz, Blues & Improvisational Music",
+    "url": "http://www.jazz-and-blues-heritage.org",
+    "text": "Origins of American jazz music, swing syncopation, blues chord progressions, brass instruments, and legendary jazz musicians.",
+    "links_to": "68;70"
+  },
+  {
+    "page": 70,
+    "title": "Electronic Music Synthesis & Audio Engineering",
+    "url": "http://www.audio-synthesis-lab.org",
+    "text": "Analog synthesizers, MIDI protocols, digital audio workstations, filter frequencies, and sound design in electronic music.",
+    "links_to": "68;69;75"
+  },
+  {
+    "page": 71,
+    "title": "World Wide Web Architecture & Internet Protocol Standards",
+    "url": "http://www.internet-architecture-board.org",
+    "text": "How the global internet works: TCP/IP networking, packet switching, DNS resolution, HTTP request headers, and routing protocols.",
+    "links_to": "72;73;74;30"
+  },
+  {
+    "page": 72,
+    "title": "Cybersecurity Defense: Cryptography & Public Key Infrastructure",
+    "url": "http://www.cybersecurity-defense.org/crypto",
+    "text": "Essential cybersecurity techniques, RSA asymmetric cryptography, digital certificates, firewall rules, and intrusion detection systems.",
+    "links_to": "71;73;74;48"
+  },
+  {
+    "page": 73,
+    "title": "Network Security, Vulnerability Scanning & Ethical Hacking",
+    "url": "http://www.ethical-hacking-center.org",
+    "text": "Practical cybersecurity practices including penetration testing, vulnerability remediation, secure network sockets, and defensive programming.",
+    "links_to": "71;72;24"
+  },
+  {
+    "page": 74,
+    "title": "Internet Privacy & Secure Communications Protocol",
+    "url": "http://www.privacy-protocols-forum.org",
+    "text": "Securing user privacy on the internet, end-to-end encrypted messaging, cookie security, anonymous routing, and data protection regulations.",
+    "links_to": "71;72;73"
+  },
+  {
+    "page": 75,
+    "title": "Electrical Engineering: Circuit Analysis & Microelectronics",
+    "url": "http://www.electrical-engineering-labs.edu",
+    "text": "Fundamental electrical engineering covering Ohm's law, semiconductor diodes, microchip fabrication, operational amplifiers, and signal processing.",
+    "links_to": "76;77;21;52"
+  },
+  {
+    "page": 76,
+    "title": "Mechanical Engineering: Thermodynamics & Machine Design",
+    "url": "http://www.mechanical-engineering-review.edu",
+    "text": "Mechanical engineering principles: thermodynamics, heat transfer, structural stress analysis, fluid dynamics, and gear assembly design.",
+    "links_to": "75;77;53"
+  },
+  {
+    "page": 77,
+    "title": "Civil & Environmental Engineering: Structural Infrastructure",
+    "url": "http://www.civil-engineering-forum.org",
+    "text": "Designing bridges, seismic resistant buildings, urban water distribution, sustainable concrete, and environmental infrastructure.",
+    "links_to": "75;76;83"
+  },
+  {
+    "page": 78,
+    "title": "Aerospace Technology & Fluid Dynamics Laboratory",
+    "url": "http://www.aerospace-technology.edu/aerodynamics",
+    "text": "Aeronautical engineering, wing airflow aerodynamics, supersonic wind tunnels, avionics instruments, and satellite orbital dynamics.",
+    "links_to": "53;75;76"
+  },
+  {
+    "page": 79,
+    "title": "Ancient Civilizations: Rome, Greece & Egypt History",
+    "url": "http://www.ancient-history-portal.org",
+    "text": "Historical archives documenting the Roman Republic, Athenian democracy, Egyptian monuments, Silk Road commerce, and archaeological excavations.",
+    "links_to": "80;81;82"
+  },
+  {
+    "page": 80,
+    "title": "World War II Historical Documents & Global Timeline",
+    "url": "http://www.ww2-historical-archive.org",
+    "text": "Comprehensive timeline of World War II military campaigns, diplomatic treaties, technological innovations, and postwar geopolitical reconstruction.",
+    "links_to": "79;81;84"
+  },
+  {
+    "page": 81,
+    "title": "The Industrial Revolution & Mechanized Society",
+    "url": "http://www.industrial-revolution-history.org",
+    "text": "How the steam engine, textile manufacturing, railway networks, and metallurgy transformed human society and global economics in modern history.",
+    "links_to": "79;80;76;85"
+  },
+  {
+    "page": 82,
+    "title": "Medieval History: Castles, Guilds & Feudal Monarchy",
+    "url": "http://www.medieval-history-studies.edu",
+    "text": "Study of European medieval societies, monastic scriptoriums, merchant guilds, chivalric codes, and castle architectural fortification.",
+    "links_to": "79;81;83"
+  },
+  {
+    "page": 83,
+    "title": "Physical Geography: Plate Tectonics & Earth Landforms",
+    "url": "http://www.earth-geography-atlas.org",
+    "text": "Geological physical geography: continental drift, volcanic fault lines, glacier formation, river delta topography, and atmospheric climate zones.",
+    "links_to": "84;77;51"
+  },
+  {
+    "page": 84,
+    "title": "Cartography & World Atlas: Geographic Information Systems",
+    "url": "http://www.cartography-world-atlas.org",
+    "text": "Map projections, Mercator distortion, geodetic surveying, satellite topography, and coordinate mapping in modern cartography and geography.",
+    "links_to": "83;79;71"
+  },
+  {
+    "page": 85,
+    "title": "Global Financial Markets & Stock Exchange Analysis",
+    "url": "http://www.financial-markets-review.com",
+    "text": "Equity investment strategies, corporate bond yields, foreign currency exchange rates, liquidity management, and Wall Street market trends.",
+    "links_to": "86;87;88"
+  },
+  {
+    "page": 86,
+    "title": "Venture Capital & High-Tech Startup Incubators",
+    "url": "http://www.venture-capital-journal.net",
+    "text": "Seed funding for technology startups, business valuation metrics, angel investors, intellectual property assets, and venture capital syndicates.",
+    "links_to": "85;87;28"
+  },
+  {
+    "page": 87,
+    "title": "Macroeconomics: Inflation, Fiscal Policy & Central Banks",
+    "url": "http://www.macroeconomics-institute.org",
+    "text": "Economic theory regarding interest rates, gross domestic product calculations, monetary inflation, national debt, and international trade balance.",
+    "links_to": "85;86;88"
+  },
+  {
+    "page": 88,
+    "title": "Corporate Accounting Standards & Financial Statement Audit",
+    "url": "http://www.accounting-standards-board.org",
+    "text": "Principles of double-entry bookkeeping, balance sheet auditing, income statement calculations, cash flow forecasting, and tax compliance.",
+    "links_to": "85;87"
+  },
+  {
+    "page": 89,
+    "title": "Isolated Tech Archive: Obsolete Computing Hardware",
+    "url": "http://www.vintage-hardware-deadend.info",
+    "text": "A preserved archive of 8-inch floppy disks, punched cards, and vacuum tube computers. Dead-end node with zero outgoing links.",
+    "links_to": ""
+  },
+  {
+    "page": 90,
+    "title": "Secret Ancient Math Manuscript: Cipher Text",
+    "url": "http://www.ancient-math-cipher.info",
+    "text": "Historical manuscript containing unpublished geometric proofs and prime number riddles with no outgoing web references.",
+    "links_to": ""
+  },
+  {
+    "page": 91,
+    "title": "Unlinked Mountain Weather Station Log",
+    "url": "http://www.remote-weather-station.info",
+    "text": "Daily meteorological records of alpine wind velocity, humidity, and barometric pressure at high altitude. Zero outgoing links.",
+    "links_to": ""
+  },
+  {
+    "page": 92,
+    "title": "Silent Film Audio Mystery Records",
+    "url": "http://www.silent-cinema-records.biz",
+    "text": "Catalogue of rare audio recordings intended for early silent movie theater accompaniment. No outward hyperlinks.",
+    "links_to": ""
+  },
+  {
+    "page": 93,
+    "title": "Deep Learning Foundations: Backpropagation & Optimization",
+    "url": "http://www.deeplearning-core.edu",
+    "text": "Training deep neural networks, stochastic gradient descent, backpropagation algorithms, activation functions, and artificial intelligence models.",
+    "links_to": "17;18;45;94"
+  },
+  {
+    "page": 94,
+    "title": "Reinforcement Learning & Markov Decision Processes",
+    "url": "http://www.reinforcement-ai.edu",
+    "text": "Q-learning, policy gradients, Bellman equations, reward maximization, and autonomous agent training in complex simulated environments.",
+    "links_to": "17;93;21;47"
+  },
+  {
+    "page": 95,
+    "title": "Modern Python Packaging: Wheels, Pip & Virtual Environments",
+    "url": "http://www.python-packaging.org",
+    "text": "Distributing Python modules, configuring virtual environments, managing dependencies with pip, and compiling binary wheels for cross-platform deployment.",
+    "links_to": "31;34;27"
+  },
+  {
+    "page": 96,
+    "title": "FastAPI & Modern Asynchronous Python Microservices",
+    "url": "http://www.fastapi-python.net",
+    "text": "High performance Python REST API development using asynchronous coroutines, type hints, Pydantic validation, and OpenAPI documentation.",
+    "links_to": "31;33;71"
+  },
+  {
+    "page": 97,
+    "title": "Java Microservices with Quarkus & GraalVM Native Image",
+    "url": "http://www.quarkus-java-native.org",
+    "text": "Supersonic subatomic Java microservices compiled directly to native machine code with GraalVM for ultra-low memory consumption in cloud environments.",
+    "links_to": "36;37;38"
+  },
+  {
+    "page": 98,
+    "title": "Design Patterns in Java: Gang of Four Reference",
+    "url": "http://www.java-design-patterns.net",
+    "text": "Concrete Java implementations of creational, structural, and behavioral design patterns: Singleton, Factory, Observer, Decorator, and Strategy.",
+    "links_to": "36;24;26"
+  },
+  {
+    "page": 99,
+    "title": "Computer Science Graph Algorithms: Dijkstra & A-Star Search",
+    "url": "http://www.graph-algorithms.edu/pathfinding",
+    "text": "Pathfinding algorithms in computer science: Dijkstra shortest path, A-star heuristic search, minimum spanning trees, and network flow optimization.",
+    "links_to": "41;48;17"
+  },
+  {
+    "page": 100,
+    "title": "Cryptography: Elliptic Curve & Zero-Knowledge Proofs",
+    "url": "http://www.modern-cryptography.org",
+    "text": "Mathematical cryptography, elliptic curve signatures, hash functions, Diffie-Hellman key exchanges, and zero-knowledge privacy proofs.",
+    "links_to": "72;48;45"
+  },
+  {
+    "page": 101,
+    "title": "Cloud Computing Architectures & Virtualization Systems",
+    "url": "http://www.cloud-computing-guild.org",
+    "text": "Hypervisor virtualization, containerization with Docker, serverless computing, distributed consensus algorithms, and scalable web infrastructure.",
+    "links_to": "71;42;26"
+  },
+  {
+    "page": 102,
+    "title": "Database Indexing & Distributed NoSQL Storage Engines",
+    "url": "http://www.nosql-database-guide.org",
+    "text": "Comparing relational SQL and distributed NoSQL key-value stores, document databases, log-structured merge trees, and eventual consistency.",
+    "links_to": "43;41;71"
+  },
+  {
+    "page": 103,
+    "title": "Football Analytics: Expected Goals & Tactical Heatmaps",
+    "url": "http://www.football-analytics-hub.com",
+    "text": "Data science applied to modern football: expected goals metrics, pass completion heatmaps, high-pressing defensive analysis, and sports statistics.",
+    "links_to": "57;58;32;18"
+  },
+  {
+    "page": 104,
+    "title": "Cricket Bowling Mastery: Reverse Swing & Pitch Conditions",
+    "url": "http://www.cricket-bowling-mastery.org",
+    "text": "The aerodynamics of cricket ball seam movement, reverse swing physics, pitch deterioration, and bowling strategy in five-day test match cricket.",
+    "links_to": "7;60;8;78"
+  },
+  {
+    "page": 105,
+    "title": "Documentary Filmmaking: Cinematography & Storytelling",
+    "url": "http://www.documentary-filmmakers.org",
+    "text": "Techniques for filming investigative documentary movie features, capturing natural soundscapes, archival editing, and cinema verite interview styles.",
+    "links_to": "12;11;62"
+  },
+  {
+    "page": 106,
+    "title": "Game AI: Pathfinding, Behavior Trees & Finite State Machines",
+    "url": "http://www.game-ai-patterns.org",
+    "text": "Implementing non-player character intelligence in video games: behavior trees, sensory perception, tactical navigation meshes, and decision algorithms.",
+    "links_to": "66;17;41"
+  },
+  {
+    "page": 107,
+    "title": "Acoustics & Spatial Sound Recording Engineering",
+    "url": "http://www.acoustics-engineering.edu",
+    "text": "Physics of acoustic wave propagation, studio soundproofing, microphone polar patterns, binaural spatial audio, and reverberation control.",
+    "links_to": "70;63;75"
+  },
+  {
+    "page": 108,
+    "title": "Silk Road History: Eurasian Trade & Cultural Exchange",
+    "url": "http://www.silk-road-history.edu",
+    "text": "Historic trade caravans connecting China, Central Asia, and Mediterranean ports: transport of silk, spices, scientific ideas, and paper making.",
+    "links_to": "79;81;84"
+  },
+  {
+    "page": 109,
+    "title": "Oceanography & Marine Ecosystem Science",
+    "url": "http://www.oceanography-marine-science.org",
+    "text": "Study of oceanic currents, deep sea hydrothermal vents, marine biodiversity, coral reef preservation, and oceanic carbon cycles.",
+    "links_to": "83;51;56"
+  },
+  {
+    "page": 110,
+    "title": "FinTech Innovation: Electronic Payments & Algorithmic Trading",
+    "url": "http://www.fintech-innovation-review.com",
+    "text": "Automated high-frequency algorithmic trading, electronic funds transfer networks, credit scoring models, and modern financial technology.",
+    "links_to": "85;86;72;31"
+  },
+  {
+    "page": 111,
+    "title": "High Performance Computing: Parallel Clusters & MPI",
+    "url": "http://www.hpc-supercomputing.edu",
+    "text": "Massively parallel computing superclusters, message passing interface (MPI), OpenMP shared memory parallelism, and petascale scientific simulations.",
+    "links_to": "42;24;52"
+  },
+  {
+    "page": 112,
+    "title": "Renewable Energy Engineering: Solar, Wind & Battery Storage",
+    "url": "http://www.renewable-energy-labs.org",
+    "text": "Engineering sustainable energy solutions: photovoltaic solar cell efficiency, wind turbine aerodynamic design, and lithium-ion grid battery storage.",
+    "links_to": "75;76;77"
+  },
+  {
+    "page": 113,
+    "title": "Biotechnology & CRISPR Gene Editing Innovations",
+    "url": "http://www.crispr-biotech-review.org",
+    "text": "Targeted genetic editing using CRISPR-Cas9, recombinant biomedical therapeutics, synthetic biology, and ethical governance of genetic engineering.",
+    "links_to": "56;23;51"
+  },
+  {
+    "page": 114,
+    "title": "Cyber Threat Intelligence: Malware Analysis & Forensics",
+    "url": "http://www.threat-intelligence-hub.org",
+    "text": "Disassembling malicious software payloads, reverse engineering computer viruses, identifying advanced persistent threats, and digital forensic analysis.",
+    "links_to": "72;73;25"
+  },
+  {
+    "page": 115,
+    "title": "Urban Planning & Smart City Infrastructure Architecture",
+    "url": "http://www.smart-city-planning.org",
+    "text": "Integrating transit network design, pedestrian friendly zoning, automated traffic signals, energy efficient architecture, and municipal fiber grids.",
+    "links_to": "77;84;71"
+  },
+  {
+    "page": 116,
+    "title": "Interactive Web Graphics: SVG, 2D Canvas & WebGL Concepts",
+    "url": "http://www.web-graphics-guide.org",
+    "text": "Rendering vector graphics, 2D canvas manipulation, matrix transforms, and hardware-accelerated WebGL 3D rendering directly inside web browsers.",
+    "links_to": "30;66;45"
+  },
+  {
+    "page": 117,
+    "title": "History of Mathematics: Euclid to Alan Turing",
+    "url": "http://www.history-of-mathematics.edu",
+    "text": "Chronicle of mathematical thought: Euclidean geometry, Islamic algebra, Newtonian calculus, Gödel's incompleteness theorems, and Turing computability.",
+    "links_to": "44;45;46;79"
+  },
+  {
+    "page": 118,
+    "title": "Cognitive Science: Human Perception & Mental Models",
+    "url": "http://www.cognitive-science-society.org",
+    "text": "Interdisciplinary study of the mind: sensory perception, working memory limits, cognitive biases, linguistic development, and connectionist models.",
+    "links_to": "17;19;56"
+  },
+  {
+    "page": 119,
+    "title": "Sports Nutrition, Athletic Performance & Muscle Physiology",
+    "url": "http://www.sports-nutrition-science.org",
+    "text": "Metabolic energy pathways for endurance athletes, hydration strategies, protein synthesis, and injury prevention in competitive sports.",
+    "links_to": "8;59;56"
+  },
+  {
+    "page": 120,
+    "title": "Renaissance Art & Scientific Discoveries in Italy",
+    "url": "http://www.renaissance-art-history.edu",
+    "text": "Leonardo da Vinci, Michelangelo, linear perspective in painting, anatomical illustration, and the rebirth of scientific curiosity in Renaissance Europe.",
+    "links_to": "79;82;84"
+  },
+  {
+    "page": 121,
+    "title": "Nanotechnology & Materials Science at Atomic Scales",
+    "url": "http://www.nanotechnology-materials.org",
+    "text": "Carbon nanotubes, graphene conductors, atomic force microscopy, nanoscale manufacturing, and metamaterials with unique refractive indices.",
+    "links_to": "52;75;76"
+  },
+  {
+    "page": 122,
+    "title": "Space Telescopes & Gravitational Wave Detectors (LIGO)",
+    "url": "http://www.gravitational-waves-observatory.org",
+    "text": "Laser interferometer gravitational-wave observatory detecting ripples in spacetime caused by merging neutron stars and supermassive black holes.",
+    "links_to": "52;54;55"
+  },
+  {
+    "page": 123,
+    "title": "Software Testing, Test-Driven Development & Automation",
+    "url": "http://www.software-testing-methodology.org",
+    "text": "Methodologies for test-driven development (TDD), automated integration testing, code coverage metrics, fuzz testing, and regression test suites.",
+    "links_to": "26;24;31"
+  },
+  {
+    "page": 124,
+    "title": "Microservices Architecture vs Monolithic Applications",
+    "url": "http://www.software-architecture-trends.com",
+    "text": "Comparing distributed microservice designs with unified monolithic codebases, evaluating network latency, database transactions, and operational complexity.",
+    "links_to": "26;38;101"
+  },
+  {
+    "page": 125,
+    "title": "The Ultimate Guide to Italian Pizza Dough & Wood Fired Crust",
+    "url": "http://www.artisan-pizza-masterclass.com",
+    "text": "Fermenting artisan pizza dough with sourdough starters, selecting San Marzano tomatoes, fresh mozzarella, and baking pizza at 900 degrees.",
+    "links_to": "1;2;3;5"
+  }
+];
+
+    // Global simulation & application state
+    let pagesData = [];
+    let surferScores = {};    // pageId -> percentage score
+    let inLinksCounts = {};   // pageId -> incoming links count
+    let backlinkMap = {};     // pageId -> array of page objects linking to it
+    const TOTAL_MOVES = 100000;
+    const STORAGE_KEY_HISTORY = 'mini_google_1998_history';
+
+    // Curated list of popular autocomplete search suggestions based on indexed content
+    const popularSuggestions = [
+      "Python", "Python Programming", "Artificial Intelligence", "Machine Learning", 
+      "Deep Learning", "Neural Networks", "Java", "Computer Science", "Algorithms", 
+      "Data Structures", "Pizza", "Cricket", "Movie", "Exam", "Football", 
+      "Space", "NASA Mars", "Quantum Physics", "Astronomy", "Cybersecurity", 
+      "Cryptography", "Web Standards", "HTML CSS", "Git Version Control", 
+      "Operating Systems", "Relational Database", "SQL", "Mathematics", "Linear Algebra", 
+      "Calculus", "Discrete Mathematics", "Robotics", "Engineering", "Electrical Engineering", 
+      "Mechanical Engineering", "Civil Engineering", "Ancient History", "World War II", 
+      "History", "Geography", "Finance", "Venture Capital", "Gaming", "Video Games", 
+      "Classical Music", "Jazz", "Electronic Music", "Screenwriting"
+    ];
+
+    // --------------------------------------------------------------------------
+    // 2. DATA INITIALIZATION & GRAPH PREPARATION
+    // --------------------------------------------------------------------------
+    function initializeData() {
+      pagesData = rawDataset.map(item => {
+        const outList = item.links_to && item.links_to.trim() !== ""
+          ? item.links_to.split(';').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+          : [];
+        return {
+          page: item.page,
+          title: item.title || item.url.replace(/^https?:\/\/(www\.)?/, ''),
+          url: item.url,
+          text: item.text,
+          outgoing: outList
+        };
+      });
+
+      // Calculate incoming links and backlinks for every page
+      inLinksCounts = {};
+      backlinkMap = {};
+      pagesData.forEach(p => { 
+        inLinksCounts[p.page] = 0; 
+        backlinkMap[p.page] = [];
+      });
+
+      pagesData.forEach(p => {
+        p.outgoing.forEach(targetId => {
+          if (inLinksCounts[targetId] !== undefined) {
+            inLinksCounts[targetId]++;
+            backlinkMap[targetId].push(p);
+          }
+        });
+      });
+
+      updateStatsPanelData();
+    }
+
+    // --------------------------------------------------------------------------
+    // 3. RANKING SYSTEM 2: RANDOM SURFER ALGORITHM (1998 PageRank Simulation)
+    // --------------------------------------------------------------------------
+    function runSurferAlgorithm() {
+      const N = pagesData.length;
+      if (N === 0) return;
+
+      // 1. Initialize visit counts for all pages to 0
+      const visits = {};
+      pagesData.forEach(p => { visits[p.page] = 0; });
+
+      // Fast lookup map from page ID to index in pagesData
+      const pageIdToIndex = {};
+      pagesData.forEach((p, idx) => { pageIdToIndex[p.page] = idx; });
+
+      // 2. Start on a randomly selected page
+      let currentIdx = Math.floor(Math.random() * N);
+
+      // 3. Perform exactly 100,000 moves
+      for (let move = 0; move < TOTAL_MOVES; move++) {
+        const currentPage = pagesData[currentIdx];
+        const outgoing = currentPage.outgoing;
+
+        // Check if we should jump to any random page:
+        // - 15% probability: Random teleportation
+        // - Dead-end handling: If a page has no outgoing links, jump to a random page
+        const shouldTeleport = (Math.random() < 0.15) || (outgoing.length === 0);
+
+        if (shouldTeleport) {
+          currentIdx = Math.floor(Math.random() * N);
+        } else {
+          // 85% probability: Follow one randomly selected outgoing link
+          const randomTargetId = outgoing[Math.floor(Math.random() * outgoing.length)];
+          if (pageIdToIndex[randomTargetId] !== undefined) {
+            currentIdx = pageIdToIndex[randomTargetId];
+          } else {
+            currentIdx = Math.floor(Math.random() * N);
+          }
+        }
+
+        // Count page visit
+        visits[pagesData[currentIdx].page]++;
+      }
+
+      // 4. Calculate score = visits / 100,000 * 100
+      surferScores = {};
+      pagesData.forEach(p => {
+        const count = visits[p.page] || 0;
+        surferScores[p.page] = (count / TOTAL_MOVES) * 100;
+      });
+
+      // Update stats summary for top authority page
+      let topPage = pagesData[0];
+      let maxScore = -1;
+      pagesData.forEach(p => {
+        if (surferScores[p.page] > maxScore) {
+          maxScore = surferScores[p.page];
+          topPage = p;
+        }
+      });
+      const topAuthEl = document.getElementById('statTopAuthority');
+      if (topAuthEl) {
+        topAuthEl.textContent = topPage.title.split(':')[0].substring(0, 18);
+      }
+    }
+
+    // Escape regex special characters safely
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^$\{}()|[\]\\]/g, '\\$&');
+    }
+
+    // --------------------------------------------------------------------------
+    // 4. RANKING SYSTEM 1: OLD WAY (1997 Multi-Word Keyword Frequency)
+    // --------------------------------------------------------------------------
+    function evaluateKeywordMatches(page, queryTokens) {
+      if (!queryTokens || queryTokens.length === 0) return { totalMatches: 0, tokensMatched: 0 };
+
+      let totalMatches = 0;
+      let tokensMatched = 0;
+
+      queryTokens.forEach(t => {
+        const escaped = escapeRegExp(t);
+        // Whole-word match, case-insensitive
+        const regex = new RegExp('\\b' + escaped + '\\b', 'gi');
+        
+        const titleMatches = (page.title.match(regex) || []).length;
+        const textMatches = (page.text.match(regex) || []).length;
+        const tokenSum = titleMatches + textMatches;
+
+        if (tokenSum > 0) {
+          tokensMatched++;
+          totalMatches += tokenSum;
+        }
+      });
+
+      return { totalMatches, tokensMatched };
+    }
+
+    // --------------------------------------------------------------------------
+    // 5. KEYWORD HIGHLIGHTING & HTML ESCAPING
+    // --------------------------------------------------------------------------
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function highlightKeywords(text, queryTokens) {
+      let safeText = escapeHtml(text);
+      if (!queryTokens || queryTokens.length === 0) return safeText;
+
+      queryTokens.forEach(token => {
+        const escaped = escapeRegExp(token);
+        const regex = new RegExp('(\\b' + escaped + '\\b)', 'gi');
+        safeText = safeText.replace(regex, '<mark class="highlight">$1</mark>');
+      });
+
+      return safeText;
+    }
+
+    // --------------------------------------------------------------------------
+    // 6. PERFORM SEARCH & RENDER TWO COLUMNS
+    // --------------------------------------------------------------------------
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const query = input.value.trim();
+
+      hideSuggestions();
+      showResultsView();
+
+      const results1997Container = document.getElementById('results1997');
+      const results1998Container = document.getElementById('results1998');
+      const summary1997 = document.getElementById('countSummary1997');
+      const summary1998 = document.getElementById('countSummary1998');
+      const metricsText = document.getElementById('resultsCountText');
+
+      if (!query) {
+        const promptHtml = '<div class="empty-state">' +
+          '<div class="empty-icon">🔍</div>' +
+          '<div style="font-weight:600; color:#444;">Please type a keyword or pick an example above!</div>' +
+          '<div class="empty-tip">Try: Python, Cricket, AI, Movie, Pizza, Space, or Cybersecurity</div>' +
+          '</div>';
+        results1997Container.innerHTML = promptHtml;
+        results1998Container.innerHTML = promptHtml;
+        summary1997.textContent = '';
+        summary1998.textContent = '';
+        metricsText.textContent = 'About 0 results (0 ms)';
+        return;
+      }
+
+      // Save to local search history
+      saveSearchHistory(query);
+
+      const startTime = performance.now();
+      const queryTokens = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+
+      // Filter pages whose text or title contains the searched keywords
+      let matchingPages = [];
+      pagesData.forEach(p => {
+        const matchResult = evaluateKeywordMatches(p, queryTokens);
+        if (matchResult.totalMatches > 0) {
+          matchingPages.push({
+            page: p.page,
+            title: p.title,
+            url: p.url,
+            text: p.text,
+            wordCount: matchResult.totalMatches,
+            tokensMatched: matchResult.tokensMatched,
+            surferScore: surferScores[p.page] || 0,
+            inLinks: inLinksCounts[p.page] || 0
+          });
+        }
+      });
+
+      // If pages match ALL search query words (Google default AND behavior), prioritize them
+      const allWordsMatched = matchingPages.filter(p => p.tokensMatched === queryTokens.length);
+      if (allWordsMatched.length > 0) {
+        matchingPages = allWordsMatched;
+      }
+
+      const searchDuration = (performance.now() - startTime).toFixed(1);
+
+      // If no pages match, show the required funny message
+      if (matchingPages.length === 0) {
+        const notFoundHtml = '<div class="empty-state">' +
+          '<div class="empty-icon">🕵️‍♂️</div>' +
+          '<div class="empty-message">Oops! Even Google couldn\'t find this one. Try another keyword!</div>' +
+          '<div class="empty-tip">No complete-word matches found for "<strong>' + escapeHtml(query) + '</strong>" in 125 indexed pages.</div>' +
+          '</div>';
+        results1997Container.innerHTML = notFoundHtml;
+        results1998Container.innerHTML = notFoundHtml;
+        summary1997.textContent = '0 results';
+        summary1998.textContent = '0 results';
+        metricsText.textContent = 'About 0 results (' + searchDuration + ' ms)';
+        return;
+      }
+
+      metricsText.textContent = 'About ' + matchingPages.length + ' results (' + searchDuration + ' ms)';
+
+      // --- LEFT COLUMN: Old Way (1997) ---
+      // Rank by keyword frequency: highest word count first
+      const list1997 = matchingPages.slice().sort((a, b) => {
+        if (b.tokensMatched !== a.tokensMatched) {
+          return b.tokensMatched - a.tokensMatched;
+        }
+        if (b.wordCount !== a.wordCount) {
+          return b.wordCount - a.wordCount;
+        }
+        return a.page - b.page; // Stable tiebreaker
+      });
+
+      summary1997.textContent = list1997.length + ' pages matched';
+      results1997Container.innerHTML = list1997.map((item, index) => {
+        const rank = index + 1;
+        const rankClass = rank === 1 ? 'rank-top-1' : (rank === 2 ? 'rank-top-2' : (rank === 3 ? 'rank-top-3' : ''));
+        return '<div class="result-card">' +
+          '<div class="card-top-row">' +
+            '<span class="rank-badge ' + rankClass + '">Rank #' + rank + '</span>' +
+            '<span class="score-badge badge-count">Word Count: ' + item.wordCount + '</span>' +
+          '</div>' +
+          '<a class="result-title-link" onclick="openWebpageViewer(' + item.page + ')">' + highlightKeywords(item.title, queryTokens) + '</a>' +
+          '<span class="page-url" onclick="openWebpageViewer(' + item.page + ')">' + escapeHtml(item.url) + '</span>' +
+          '<div class="page-snippet">' + highlightKeywords(item.text, queryTokens) + '</div>' +
+        '</div>';
+      }).join('');
+
+      // --- RIGHT COLUMN: Surfer Way (1998) ---
+      // Rank by Random Surfer PageRank simulation score first
+      const list1998 = matchingPages.slice().sort((a, b) => {
+        if (b.tokensMatched !== a.tokensMatched) {
+          return b.tokensMatched - a.tokensMatched;
+        }
+        if (b.surferScore !== a.surferScore) {
+          return b.surferScore - a.surferScore;
+        }
+        return b.inLinks - a.inLinks; // Tiebreaker by in-links
+      });
+
+      summary1998.textContent = list1998.length + ' pages matched';
+      results1998Container.innerHTML = list1998.map((item, index) => {
+        const rank = index + 1;
+        const rankClass = rank === 1 ? 'rank-top-1' : (rank === 2 ? 'rank-top-2' : (rank === 3 ? 'rank-top-3' : ''));
+        return '<div class="result-card">' +
+          '<div class="card-top-row">' +
+            '<span class="rank-badge ' + rankClass + '">Rank #' + rank + '</span>' +
+            '<div>' +
+              '<span class="score-badge badge-surfer">Surfer: ' + item.surferScore.toFixed(1) + '%</span>' +
+              '<span class="score-badge badge-inlinks">Links in: ' + item.inLinks + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<a class="result-title-link" onclick="openWebpageViewer(' + item.page + ')">' + highlightKeywords(item.title, queryTokens) + '</a>' +
+          '<span class="page-url" onclick="openWebpageViewer(' + item.page + ')">' + escapeHtml(item.url) + '</span>' +
+          '<div class="page-snippet">' + highlightKeywords(item.text, queryTokens) + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // --------------------------------------------------------------------------
+    // 7. IN-APP WEBPAGE BROWSER (LOCAL NAVIGATION & GRAPH BROWSING)
+    // --------------------------------------------------------------------------
+    function openWebpageViewer(pageId) {
+      const page = pagesData.find(p => p.page === pageId);
+      if (!page) return;
+
+      document.getElementById('resultsView').style.display = 'none';
+      document.getElementById('metricsBar').style.display = 'none';
+      const browserView = document.getElementById('browserView');
+      browserView.style.display = 'block';
+
+      // Populate chrome & page details
+      document.getElementById('browserUrlText').textContent = page.url;
+      document.getElementById('browserTitle').textContent = page.title;
+      document.getElementById('browserPageIdBadge').textContent = 'Page #' + page.page;
+      document.getElementById('browserSurferBadge').textContent = 'Surfer Score: ' + (surferScores[page.page] || 0).toFixed(1) + '%';
+      document.getElementById('browserInlinksBadge').textContent = 'Links in: ' + (inLinksCounts[page.page] || 0);
+      document.getElementById('browserTextBody').textContent = page.text;
+
+      // Populate outgoing links
+      const outgoingContainer = document.getElementById('browserOutgoingLinks');
+      document.getElementById('browserOutgoingCount').textContent = page.outgoing.length;
+
+      if (page.outgoing.length === 0) {
+        outgoingContainer.innerHTML = '<div style="grid-column: 1 / -1; color:var(--text-muted); font-size:0.88rem; font-style:italic;">' +
+          '🛑 Dead-end page: This page has no outgoing links! The random surfer will jump to a random page.' +
+          '</div>';
+      } else {
+        outgoingContainer.innerHTML = page.outgoing.map(targetId => {
+          const targetPage = pagesData.find(p => p.page === targetId);
+          if (!targetPage) return '';
+          return '<div class="outgoing-link-card" onclick="openWebpageViewer(' + targetPage.page + ')">' +
+            '<div class="outgoing-title">🔗 ' + escapeHtml(targetPage.title) + '</div>' +
+            '<div class="outgoing-url">' + escapeHtml(targetPage.url) + '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // Populate incoming backlinks
+      const backlinks = backlinkMap[page.page] || [];
+      const incomingContainer = document.getElementById('browserIncomingLinks');
+      document.getElementById('browserIncomingCount').textContent = backlinks.length;
+
+      if (backlinks.length === 0) {
+        incomingContainer.innerHTML = '<div style="grid-column: 1 / -1; color:var(--text-muted); font-size:0.88rem; font-style:italic;">' +
+          'No incoming links from other pages.' +
+          '</div>';
+      } else {
+        incomingContainer.innerHTML = backlinks.map(sourcePage => {
+          return '<div class="outgoing-link-card" onclick="openWebpageViewer(' + sourcePage.page + ')">' +
+            '<div class="outgoing-title">📥 ' + escapeHtml(sourcePage.title) + '</div>' +
+            '<div class="outgoing-url">' + escapeHtml(sourcePage.url) + '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // Scroll to viewer top smoothly
+      browserView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function backToSearchResults() {
+      document.getElementById('browserView').style.display = 'none';
+      document.getElementById('resultsView').style.display = 'block';
+      document.getElementById('metricsBar').style.display = 'flex';
+      window.scrollTo({ top: document.getElementById('searchCard').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function showResultsView() {
+      document.getElementById('browserView').style.display = 'none';
+      document.getElementById('resultsView').style.display = 'block';
+      document.getElementById('metricsBar').style.display = 'flex';
+    }
+
+    function exploreRandomPage() {
+      if (pagesData.length === 0) return;
+      const randomIdx = Math.floor(Math.random() * pagesData.length);
+      openWebpageViewer(pagesData[randomIdx].page);
+    }
+
+    function returnToHome() {
+      document.getElementById('searchInput').value = '';
+      updateClearBtnVisibility();
+      hideSuggestions();
+      showResultsView();
+      searchFor('Pizza');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --------------------------------------------------------------------------
+    // 8. AUTOCOMPLETE SEARCH SUGGESTIONS
+    // --------------------------------------------------------------------------
+    function handleSearchInput(e) {
+      const val = e.target.value.trim().toLowerCase();
+      updateClearBtnVisibility();
+
+      if (!val) {
+        hideSuggestions();
+        return;
+      }
+
+      // Match popular keywords and page titles
+      const matched = [];
+      popularSuggestions.forEach(s => {
+        if (s.toLowerCase().includes(val) && !matched.includes(s)) {
+          matched.push(s);
+        }
+      });
+
+      // Also search page titles
+      pagesData.forEach(p => {
+        const titleClean = p.title.split(':')[0].trim();
+        if (titleClean.toLowerCase().includes(val) && !matched.includes(titleClean)) {
+          if (matched.length < 8) matched.push(titleClean);
+        }
+      });
+
+      renderSuggestions(matched.slice(0, 7));
+    }
+
+    function renderSuggestions(list) {
+      const dropdown = document.getElementById('suggestionsDropdown');
+      if (!list || list.length === 0) {
+        hideSuggestions();
+        return;
+      }
+
+      dropdown.innerHTML = list.map(item => {
+        return '<li class="suggestion-item" onclick="selectSuggestion(\'' + escapeHtml(item).replace(/'/g, "\\'") + '\')">' +
+          '<span class="suggestion-icon">🔍</span>' +
+          '<span>' + escapeHtml(item) + '</span>' +
+        '</li>';
+      }).join('');
+
+      dropdown.style.display = 'block';
+    }
+
+    function selectSuggestion(text) {
+      const input = document.getElementById('searchInput');
+      input.value = text;
+      updateClearBtnVisibility();
+      hideSuggestions();
+      performSearch();
+    }
+
+    function hideSuggestions() {
+      const dropdown = document.getElementById('suggestionsDropdown');
+      if (dropdown) dropdown.style.display = 'none';
+    }
+
+    function updateClearBtnVisibility() {
+      const input = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) {
+        clearBtn.style.display = input.value.trim() ? 'block' : 'none';
+      }
+    }
+
+    function clearSearchInput() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      updateClearBtnVisibility();
+      hideSuggestions();
+      input.focus();
+    }
+
+    // --------------------------------------------------------------------------
+    // 9. LOCAL SEARCH HISTORY (localStorage)
+    // --------------------------------------------------------------------------
+    function getSearchHistory() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY_HISTORY);
+        return data ? JSON.parse(data) : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function saveSearchHistory(query) {
+      const clean = query.trim();
+      if (!clean) return;
+
+      try {
+        let history = getSearchHistory();
+        history = history.filter(item => item.toLowerCase() !== clean.toLowerCase());
+        history.unshift(clean);
+        history = history.slice(0, 8);
+        localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history));
+        renderSearchHistory();
+      } catch (err) {
+        // Safe failover
+      }
+    }
+
+    function clearSearchHistory() {
+      try {
+        localStorage.removeItem(STORAGE_KEY_HISTORY);
+      } catch (err) {}
+      renderSearchHistory();
+    }
+
+    function renderSearchHistory() {
+      const bar = document.getElementById('historyBar');
+      const container = document.getElementById('historyChipsContainer');
+      const history = getSearchHistory();
+
+      if (!history || history.length === 0) {
+        bar.style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = history.map(item => {
+        return '<span class="history-chip" onclick="searchFor(\'' + escapeHtml(item).replace(/'/g, "\\'") + '\')">' + escapeHtml(item) + '</span>';
+      }).join('');
+
+      bar.style.display = 'flex';
+    }
+
+    // --------------------------------------------------------------------------
+    // 10. DATABASE & GRAPH STATISTICS PANEL
+    // --------------------------------------------------------------------------
+    function toggleStatsPanel() {
+      const panel = document.getElementById('statsPanel');
+      const isVisible = panel.style.display === 'block';
+      panel.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function updateStatsPanelData() {
+      let deadEnds = 0;
+      let totalLinks = 0;
+      pagesData.forEach(p => {
+        if (p.outgoing.length === 0) deadEnds++;
+        totalLinks += p.outgoing.length;
+      });
+
+      const pagesEl = document.getElementById('statTotalPages');
+      const linksEl = document.getElementById('statTotalLinks');
+      const deadEl = document.getElementById('statDeadEnds');
+      if (pagesEl) pagesEl.textContent = pagesData.length;
+      if (linksEl) linksEl.textContent = totalLinks;
+      if (deadEl) deadEl.textContent = deadEnds;
+    }
+
+    // --------------------------------------------------------------------------
+    // 11. INTERACTIVE CONTROLS & RECALCULATION
+    // --------------------------------------------------------------------------
+    function searchFor(keyword) {
+      const input = document.getElementById('searchInput');
+      input.value = keyword;
+      updateClearBtnVisibility();
+      performSearch();
+    }
+
+    function handleRecalculateSurfer() {
+      const loading = document.getElementById('loadingIndicator');
+      const surferStatusPill = document.getElementById('surferStatusPill');
+      const surferBtn = document.getElementById('surferBtn');
+
+      loading.style.display = 'block';
+      surferBtn.disabled = true;
+      surferBtn.style.opacity = '0.6';
+
+      setTimeout(() => {
+        const startTime = performance.now();
+        
+        // Recalculate 100,000 moves
+        runSurferAlgorithm();
+        
+        const duration = Math.round(performance.now() - startTime);
+
+        loading.style.display = 'none';
+        surferBtn.disabled = false;
+        surferBtn.style.opacity = '1';
+        surferStatusPill.textContent = '✓ Recalculated 100,000 Moves (' + duration + ' ms)';
+
+        // Refresh currently displayed surfer rankings
+        performSearch();
+      }, 50);
+    }
+
+    // --------------------------------------------------------------------------
+    // 12. INITIALIZATION & EVENT LISTENERS
+    // --------------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize data & graph relationships
+      initializeData();
+
+      // 2. Run initial 100,000 random surfer moves
+      runSurferAlgorithm();
+
+      // 3. Render stored search history
+      renderSearchHistory();
+
+      // 4. Attach event listeners
+      document.getElementById('searchBtn').addEventListener('click', performSearch);
+      
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', handleSearchInput);
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          hideSuggestions();
+          performSearch();
+        } else if (e.key === 'Escape') {
+          hideSuggestions();
+        }
+      });
+
+      document.getElementById('surferBtn').addEventListener('click', handleRecalculateSurfer);
+
+      // Close autocomplete dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-input-wrapper')) {
+          hideSuggestions();
+        }
+      });
+
+      // Default initial search
+      searchFor('Pizza');
+    });
+  </script>
+</body>
+</html>
